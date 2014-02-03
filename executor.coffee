@@ -22,12 +22,12 @@ class Validator
 
 	_onServerError: (response, parentResponse, requestLink)->
 		console.log 'ERROR:', response.statusCode, requestLink
-		console.log 'PAGE-REQUEST:', parentResponse.request.href
+		console.log 'ON PAGE:', parentResponse.request.href
 		console.log ''
 
 	_onClientError: (error, parentResponse, requestLink) ->
 		console.log "ERROR:",  requestLink
-		console.log 'PAGE-REQUEST:', parentResponse.request.href
+		console.log 'ON PAGE:', parentResponse.request.href
 		console.log ''
 
 	_getFullyQualifiedLinks: (response, pageLink) ->
@@ -72,5 +72,5 @@ class Validator
 
 
 
-v = new Validator 'http://stag-website-scene.practo.com', cheerio
+v = new Validator 'http://tusharm.com', cheerio
 v.start()
