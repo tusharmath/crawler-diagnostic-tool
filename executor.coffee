@@ -1,3 +1,4 @@
+url = require("url")
 require('coffee-trace')
 Crawler = require("crawler").Crawler
 cheerio = require 'cheerio'
@@ -13,11 +14,11 @@ class Validator
 
 	_isloaded : (link) -> if @loadedlinks[link] is yes then yes else no
 		
-	_qualifyUrl : (url) ->
-		return "http:#{url}" if url.match(/^\/\//)
-		return url if url.match(/https*/)
-		return "http:#{url}" if url.match('www')
-		@hostname + url 
+	_qualifyUrl : (pageLink, str) ->
+		item = url.resolve pageLink, str
+		#console.log item
+		item
+		
 
 	_onServerError: (response, parentResponse, requestLink)->
 		console.log 'ERROR:', response.statusCode, requestLink
@@ -29,11 +30,11 @@ class Validator
 		console.log 'PAGE-REQUEST:', parentResponse.request.href
 		console.log ''
 
-	_getFullyQualifiedLinks: (response) ->
+	_getFullyQualifiedLinks: (response, pageLink) ->
 		result = []
 		for a in @cheerio.load(response.body)('a')
 			href =  a.attribs.href
-			result.push @_qualifyUrl href if href
+			result.push @_qualifyUrl pageLink, href if href
 		return result
 
 	_onComplete: -> console.log 'Completed, closing connections...'
@@ -62,7 +63,7 @@ class Validator
 
 		#Stop crawling sites out of the set hostname
 		else if response.request.href.match @hostname
-			for link in @_getFullyQualifiedLinks response
+			for link in @_getFullyQualifiedLinks response, response.request.href
 				if @_isloaded(link) is no
 					@_crawl link, response
 					@loadedlinks[link] = yes
