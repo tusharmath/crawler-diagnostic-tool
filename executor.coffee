@@ -1,4 +1,4 @@
-#require('coffee-trace')
+require('coffee-trace')
 Crawler = require("crawler").Crawler
 cheerio = require 'cheerio'
 
@@ -14,7 +14,9 @@ class Validator
 	_isloaded : (link) -> if @loadedlinks[link] is yes then yes else no
 		
 	_qualifyUrl : (url) ->
+		return "http:#{url}" if url.match(/^\/\//)
 		return url if url.match(/https*/)
+		return "http:#{url}" if url.match('www')
 		@hostname + url 
 
 	_onServerError: (response, parentResponse, requestLink)->
@@ -23,12 +25,16 @@ class Validator
 		console.log ''
 
 	_onClientError: (error, parentResponse, requestLink) ->
-		console.log error
-		console.log 'PAGE-REQUEST:', requestLink
+		console.log "ERROR:",  requestLink
+		console.log 'PAGE-REQUEST:', parentResponse.request.href
 		console.log ''
 
 	_getFullyQualifiedLinks: (response) ->
-		return (@_qualifyUrl a.attribs.href for a in @cheerio.load(response.body)('a'))
+		result = []
+		for a in @cheerio.load(response.body)('a')
+			href =  a.attribs.href
+			result.push @_qualifyUrl href if href
+		return result
 
 	_onComplete: -> console.log 'Completed, closing connections...'
 
@@ -65,5 +71,5 @@ class Validator
 
 
 
-v = new Validator 'http://tusharm.com', cheerio
+v = new Validator 'http://stag-website-scene.practo.com', cheerio
 v.start()
