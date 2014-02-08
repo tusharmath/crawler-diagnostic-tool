@@ -1,0 +1,3 @@
+#!/usr/bin/env node
+crawler = require('../')
+crawler.crawl(process.argv[2])

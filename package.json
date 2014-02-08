@@ -1,6 +1,14 @@
 {
-    "dependencies": {
-        "crawler": "*",
-        "cheerio": "*"
-    }
+	"dependencies": {
+		"request": "*",
+		"cheerio": "*"
+	},
+	"bin": {
+		"crawl": "./bin/crawl"
+	},
+	"devDependencies": {
+		"coffee-trace": "*",
+		"should": "*",
+		"mockery": "*"
+	}
 }
