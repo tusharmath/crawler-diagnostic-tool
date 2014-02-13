@@ -1,16 +1,22 @@
 class Extractor
-	constructor: (@cheerio, @baseUrl, @url)->
+	constructor: (@cheerio, @startUrl, @url)->
 
-	create_target: (link, type) -> {link: @_resolve(link), type}
+	create_target: (baseUrl, link, type) ->
+		{link: @_resolve(baseUrl, link), type}
 	
 	_link_clearer: (link) ->
 		return false if link.match(/(^javascript)|(^mailto)\:/)
 		link.replace(/\#.*/, '')
 
-	_resolve: (link) -> @url.resolve @baseUrl, link
+	_resolve: (baseUrl, link) -> 
+		if baseUrl is undefined
+			throw new Error 'Cannot resolve a url if base url is not defined'
+		if link is undefined
+			throw new Error 'Cannot resolve a url if link is not defined'
+		@url.resolve baseUrl, link
 
-	_is_internal: (link) ->
-		@_resolve(link).indexOf(@baseUrl) > -1 if link
+	_is_internal: (baseUrl, link) ->
+		@_resolve(baseUrl, link).indexOf(@startUrl) is 0
 		
 
 	_get_targets: (body) -> @cheerio.load(body)('a, img, script, link')
@@ -20,8 +26,7 @@ class Extractor
 		switch target.name
 
 			when 'a'
-
-				type = if @_is_internal(target.attribs.href) is yes then 'get' else 'head'
+				type = if @_is_internal(target.parent.href, target.attribs.href) is yes then 'get' else 'head'
 				link = target.attribs.href
 			
 			when 'img'
@@ -35,11 +40,11 @@ class Extractor
 				type =  'head'
 				link =  target.attribs.href
 		
-		if link and ref = @_link_clearer link
-			@create_target(ref, type)
+		if link and (ref = @_link_clearer(link))
+			@create_target target.parent.href, ref, type
 	
 	_extract: (body)->  (@_get_req i for i in @_get_targets body)
 	
 	extract: (body) -> @_extract body
 
-module.exports = Extractor	
+module.exports = Extractor
