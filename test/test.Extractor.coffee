@@ -1,11 +1,16 @@
 suite 'Extractor', ->
 	Extractor = require '../lib/Extractor'
 	url = require 'url'
-	test 'create_target', ->
+	test 'create_target simple call', ->
 		e = new Extractor null, null, resolve: (a,b)-> a+b
-		target = e.create_target('sample-base-url', 'sample-base-link', 'sample-type')
+		target = e.create_target('sample-base-url', 'sample-base-link', 'get')
 		target.link.should.equal 'sample-base-urlsample-base-link'
-		target.type.should.equal 'sample-type'
+		target.type.should.equal 'get'
+
+	test 'create_target should not accept empty types', ->
+		e = new Extractor
+		e.create_target.bind(e, 'sample-base-url', 'sample-link').should.throw 'Targets can not be created without a type'
+
 
 
 	test '_is_internal', ->

@@ -2,6 +2,9 @@ class Extractor
 	constructor: (@cheerio, @startUrl, @url)->
 
 	create_target: (baseUrl, link, type) ->
+		if type isnt 'get' and type isnt 'head'
+			throw new Error 'Targets can not be created without a type'
+
 		{link: @_resolve(baseUrl, link), type}
 	
 	_link_clearer: (link) ->
