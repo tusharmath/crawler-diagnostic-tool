@@ -1,3 +1,3 @@
-#!/usr/bin/env node
+#!/usr/bin/env coffee
 crawler = require('../')
 crawler.crawl(process.argv[2])

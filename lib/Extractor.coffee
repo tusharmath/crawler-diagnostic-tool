@@ -28,6 +28,8 @@ class Extractor
 		switch target.name
 
 			when 'a'
+				if not target.attribs.href
+					break
 				type = if @_is_internal(parentLink, target.attribs.href) is yes then 'get' else 'head'
 				link = target.attribs.href
 			
