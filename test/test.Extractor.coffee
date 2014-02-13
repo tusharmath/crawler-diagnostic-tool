@@ -5,6 +5,7 @@ suite 'Extractor', ->
 		e = new Extractor null, null, resolve: (a,b)-> a+b
 		target = e.create_target('sample-base-url', 'sample-base-link', 'get')
 		target.link.should.equal 'sample-base-urlsample-base-link'
+		target.parentLink.should.equal 'sample-base-url'
 		target.type.should.equal 'get'
 
 	test 'create_target should not accept empty types', ->

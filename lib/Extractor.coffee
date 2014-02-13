@@ -1,11 +1,10 @@
 class Extractor
 	constructor: (@cheerio, @startUrl, @url)->
 
-	create_target: (baseUrl, link, type) ->
+	create_target: (parentLink, link, type) ->
 		if type isnt 'get' and type isnt 'head'
 			throw new Error 'Targets can not be created without a type'
-
-		{link: @_resolve(baseUrl, link), type}
+		{parentLink, link: @_resolve(parentLink, link), type}
 	
 	_link_clearer: (link) ->
 		return false if link.match(/(^javascript)|(^mailto)\:/)
@@ -24,7 +23,7 @@ class Extractor
 
 	_get_targets: (body) -> @cheerio.load(body)('a, img, script, link')
 	
-	_get_req: (target) ->
+	_get_req: (target, parentLink) ->
 
 		switch target.name
 
@@ -44,10 +43,10 @@ class Extractor
 				link =  target.attribs.href
 		
 		if link and (ref = @_link_clearer(link))
-			@create_target target.parent.href, ref, type
+			@create_target parentLink, ref, type
 	
-	_extract: (body)->  (@_get_req i for i in @_get_targets body)
+	_extract: (body, parentLink)->  (@_get_req i, parentLink for i in @_get_targets body)
 	
-	extract: (body) -> @_extract body
+	extract: (body, parentLink) -> @_extract body, parentLink
 
 module.exports = Extractor
