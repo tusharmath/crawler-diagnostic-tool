@@ -1,4 +1,4 @@
-class Executor
+class Crawler
 	constructor: (@starturl, @requestor, @extractor, @onResponseCallback)->
 		@loadedlinks = {}	
 
