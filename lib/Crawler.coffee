@@ -18,7 +18,6 @@ class Crawler
 		for target in @extractor.extract(response.body, response.request.href)
 			if target and @loadedlinks[target.link] isnt yes
 				@loadedlinks[target.link] = yes
-				target.parent = response
 				@_request target
 
 	_onResponse: (error, response, target) =>
