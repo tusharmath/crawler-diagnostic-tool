@@ -39,5 +39,5 @@ class Crawler
 	
 	start: -> @_request @_start_target() 
 		
-module.exports = Executor
+module.exports = Crawler
 
