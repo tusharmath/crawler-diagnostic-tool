@@ -3,11 +3,9 @@ class Crawler
 		@loadedlinks = {}	
 
 	_start_target: ->
-		target = @_create_target @starturl, 'get'
+		target = @extractor.create_target @starturl, @starturl, 'get'
 		target.parent = request: href : @starturl
 		target
-		
-	_create_target: (url, type)-> @extractor.create_target url, type
 	
 	_updateLinks: (response) ->	@loadedlinks[response.request.href] = true
 
@@ -17,7 +15,7 @@ class Crawler
 		true
 
 	_requestAll: (response) ->
-		for target in @extractor.extract(response.body)
+		for target in @extractor.extract(response.body, response.request.href)
 			if target and @loadedlinks[target.link] isnt yes
 				@loadedlinks[target.link] = yes
 				target.parent = response

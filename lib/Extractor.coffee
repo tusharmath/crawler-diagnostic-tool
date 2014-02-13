@@ -28,7 +28,7 @@ class Extractor
 		switch target.name
 
 			when 'a'
-				type = if @_is_internal(target.parent.href, target.attribs.href) is yes then 'get' else 'head'
+				type = if @_is_internal(parentLink, target.attribs.href) is yes then 'get' else 'head'
 				link = target.attribs.href
 			
 			when 'img'
