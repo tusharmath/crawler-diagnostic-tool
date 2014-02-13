@@ -47,6 +47,9 @@ class Extractor
 	
 	_extract: (body, parentLink)->  (@_get_req i, parentLink for i in @_get_targets body)
 	
-	extract: (body, parentLink) -> @_extract body, parentLink
+	extract: (body, parentLink) ->
+		if not parentLink
+			throw new Error 'Can not extract without a parent link'
+		@_extract body, parentLink
 
 module.exports = Extractor

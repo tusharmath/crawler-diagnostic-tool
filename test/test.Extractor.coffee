@@ -12,7 +12,9 @@ suite 'Extractor', ->
 		e = new Extractor
 		e.create_target.bind(e, 'sample-base-url', 'sample-link').should.throw 'Targets can not be created without a type'
 
-
+	test 'extract', ->
+		e = new Extractor
+		e.extract.bind().should.throw 'Can not extract without a parent link'
 
 	test '_is_internal', ->
 		e = new Extractor null, 'carbon-di-oxide', resolve: (a,b)-> a+b
