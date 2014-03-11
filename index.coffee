@@ -17,12 +17,16 @@ crawl = (startUrl = 'http://practo.com/hello', onResponse) ->
 	extractor = new Extractor cheerio, startUrl, url
 
 	onResponse = onResponse or (err, res, target) ->
-		response_code = rpad (if res then res.statusCode else 'N/A'), 6
-		type = rpad target.type.toUpperCase(), 4
-		if err or res.statusCode isnt 200
-			console.log '!', type, response_code, target.link, '@', target.parent.request.href
+		if res or err.code
+			response_code = rpad (if res then res.statusCode else err.code or 'N/A'), 20
+			type = rpad target.type.toUpperCase(), 4
+			
+			if err or res.statusCode isnt 200
+				console.log '!', type, response_code, target.link, '@', target.parentLink
+			else
+				console.log ' ', type, response_code, target.link
 		else
-			console.log ' ', type, response_code, target.link
+			console.error err	
 
 	crawler = new Crawler startUrl, requestor, extractor, onResponse
 	crawler.setup()
