@@ -1,14 +1,24 @@
 {
-	"dependencies": {
-		"request": "*",
-		"cheerio": "*"
-	},
-	"bin": {
-		"crawl": "./bin/crawl"
-	},
-	"devDependencies": {
-		"coffee-trace": "*",
-		"should": "*",
-		"mockery": "*"
-	}
+  "name": "crawler-diagnostic-tool",
+  "preferGlobal": true,
+  "version": "0.0.2",
+  "author": {
+    "name": "Tushar Mathur",
+    "email": "tusharmath@gmail.com"
+  },
+  "dependencies": {
+    "request": "*",
+    "cheerio": "*"
+  },
+  "bin": {
+    "crawl": "./bin/crawl"
+  },
+  "devDependencies": {
+    "coffee-trace": "*",
+    "should": "*",
+    "mockery": "*",
+    "grunt": "~0.4.3",
+    "matchdep": "~0.3.0",
+    "grunt-release": "~0.7.0"
+  }
 }
