@@ -10,3 +10,6 @@
 	ncrawl http://tusharm.com
 	```
 
+
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/tusharmath/crawler-diagnostic-tool.svg)](https://greenkeeper.io/)
