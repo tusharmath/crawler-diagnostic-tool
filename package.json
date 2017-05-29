@@ -23,8 +23,8 @@
     "coffee-trace": "*",
     "should": "*",
     "mockery": "*",
-    "grunt": "~0.4.3",
-    "matchdep": "~0.3.0",
-    "grunt-release": "~0.7.0"
+    "grunt": "~1.0.1",
+    "matchdep": "~1.0.1",
+    "grunt-release": "~0.14.0"
   }
 }
